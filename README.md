@@ -78,3 +78,74 @@ while running:
     clock.tick(60)
 
 pygame.quit()
+
+import pygame
+import sys
+
+# Initialize Pygame
+pygame.init()
+
+# Set up the window
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Simple Fighting Game")
+
+# Colors
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+
+# Player settings
+player_size = 50
+player_x = WIDTH//2
+player_y = HEIGHT//2
+player_speed = 5
+is_attacking = False
+
+# Load character image (replace with your image path)
+player_img = pygame.Surface((player_size, player_size))
+player_img.fill(RED)
+
+clock = pygame.time.Clock()
+
+running = True
+while running:
+    screen.fill(WHITE)
+    
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    
+    # Get keyboard input
+    keys = pygame.key.get_pressed()
+    
+    # Movement
+    if keys[pygame.K_LEFT]:
+        player_x -= player_speed
+    if keys[pygame.K_RIGHT]:
+        player_x += player_speed
+    
+    # Attack
+    if keys[pygame.K_SPACE]:
+        is_attacking = True
+    else:
+        is_attacking = False
+    
+    # Draw player
+    screen.blit(player_img, (player_x, player_y))
+    
+    # Draw attack effect
+    if is_attacking:
+        pygame.draw.circle(screen, BLUE, 
+                         (player_x + player_size, player_y + player_size//2), 
+                         20)
+    
+    # Keep player in bounds
+    player_x = max(0, min(WIDTH - player_size, player_x))
+    
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
+sys.exit()
